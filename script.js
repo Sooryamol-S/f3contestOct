@@ -1,4 +1,5 @@
 let timers = [];
+let audio; // Declare audio variable outside the function
 
 document.getElementById('set-timer').addEventListener('click', () => {
   const hours = parseInt(document.getElementById('hours').value) || 0;
@@ -61,9 +62,25 @@ function alertTimerEnd(id) {
   const endAlert = document.createElement('div');
   endAlert.classList.add('timer-item');
   endAlert.textContent = 'Timer Is Up!';
-  document.getElementById('timers-list').appendChild(endAlert);
 
-  const audio = new Audio('https://www.soundjay.com/button/beep-07.wav');
+  // Create the Stop button
+  const stopButton = document.createElement('button');
+  stopButton.textContent = 'Stop';
+  
+  // Add event listener to stop the audio when the button is clicked
+  stopButton.addEventListener('click', () => {
+    if (audio) {
+      audio.pause(); // Stop the audio
+      audio.currentTime = 0; // Reset the audio to the start
+    }
+    endAlert.remove(); // Optionally remove the alert when the button is clicked
+  });
+
+  endAlert.appendChild(stopButton); // Append the Stop button to the alert
+  document.getElementById('timers-list').appendChild(endAlert);
+  
+  // Create and play the audio
+  audio = new Audio('ringtone-58761.mp3');
   audio.play();
 }
 
